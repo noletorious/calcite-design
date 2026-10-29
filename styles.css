@@ -54,13 +54,20 @@ body {
   display: block;
 }
 
-.app-subheader {
+.app-brand-name {
   font-size: 11px;
-  font-weight: 600;
-  color: #0079c1;
+  font-weight: 700;
+  color: var(--calcite-color-brand, #0079c1);
   letter-spacing: 0.8px;
   text-transform: uppercase;
   line-height: 1;
+}
+
+.app-subheader {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--calcite-color-text-3, #6a6a6a);
+  line-height: 1.2;
 }
 
 /* Navigation - clean text styling (no background buttons) */
@@ -261,26 +268,6 @@ calcite-shell {
 }
 
 /* Learner Layout */
-.learner-intro {
-  background: #ffffff;
-  padding: 20px 24px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.learner-intro h2 {
-  margin: 0 0 6px 0;
-  font-size: 22px;
-  color: #151515;
-}
-
-.learner-intro p {
-  margin: 0;
-  color: #555555;
-  font-size: 14px;
-}
-
 /* Component Pills Navigation */
 .component-selector {
   display: flex;
