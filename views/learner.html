@@ -1,0 +1,304 @@
+<div class="learner-view">
+  <section class="learner-intro">
+    <h2>🎨 Calcite Component Learner</h2>
+    <p>Explore live interactive Calcite components, test their behaviors, and copy clean markup for your apps.</p>
+  </section>
+
+  <!-- Component Quick Selector Pills -->
+  <div class="component-selector" id="componentSelector">
+    <button class="pill-btn active" data-key="button">Buttons</button>
+    <button class="pill-btn" data-key="icon">Icons</button>
+    <button class="pill-btn" data-key="card">Cards</button>
+    <button class="pill-btn" data-key="notice">Notices & Alerts</button>
+    <button class="pill-btn" data-key="input">Inputs</button>
+    <button class="pill-btn" data-key="switch_checkbox">Switches & Checkboxes</button>
+    <button class="pill-btn" data-key="slider">Sliders</button>
+    <button class="pill-btn" data-key="badge_chip">Badges & Chips</button>
+    <button class="pill-btn" data-key="accordion">Accordions</button>
+  </div>
+
+  <!-- Two-Column Grid: Live Preview (Left) & Code (Right) -->
+  <div class="learner-grid">
+    <!-- Left: Live Component Preview -->
+    <div class="learner-column">
+      <div class="column-header">
+        <h3>
+          <span>Live Component</span>
+          <span class="component-tag" id="componentTag">Button</span>
+        </h3>
+      </div>
+      <div class="live-stage" id="liveStage">
+        <!-- Live component renders here -->
+      </div>
+    </div>
+
+    <!-- Right: Code Snippet -->
+    <div class="learner-column">
+      <div class="column-header">
+        <h3>HTML Code</h3>
+        <button class="copy-btn" id="copyCodeBtn">📋 Copy Code</button>
+      </div>
+      <div class="code-wrapper">
+        <pre class="code-view" id="codeView"><code></code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Component Catalog Reference -->
+  <section class="catalog-section">
+    <h3>Component Catalog</h3>
+    <div class="catalog-grid" id="catalogGrid">
+      <!-- Generated catalog cards -->
+    </div>
+  </section>
+</div>
+
+<script>
+  (() => {
+    const components = {
+      button: {
+        name: "Buttons",
+        tag: "calcite-button",
+        desc: "Interactive button elements with variants, sizes, icons, and appearances.",
+        html: `<!-- Standard Button Variants -->
+<calcite-button>Default</calcite-button>
+<calcite-button kind="brand">Brand</calcite-button>
+<calcite-button kind="danger" appearance="outline">Danger Outline</calcite-button>
+<calcite-button kind="brand" icon-start="plus">Add Item</calcite-button>
+<calcite-button disabled>Disabled Button</calcite-button>`
+      },
+
+      icon: {
+        name: "Icons",
+        tag: "calcite-icon",
+        desc: "Calcite icons with scalable sizes and standard Esri iconography.",
+        html: `<!-- Calcite Icons with Different Scales -->
+<div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+  <calcite-icon icon="check" scale="s" title="Small check"></calcite-icon>
+  <calcite-icon icon="star" scale="m" title="Medium star"></calcite-icon>
+  <calcite-icon icon="gear" scale="l" title="Large gear"></calcite-icon>
+  <calcite-icon icon="launch" scale="m" title="External link"></calcite-icon>
+  <calcite-icon icon="search" scale="m" title="Search"></calcite-icon>
+  <calcite-icon icon="information" scale="m" title="Info"></calcite-icon>
+  <calcite-icon icon="plus" scale="m" title="Plus"></calcite-icon>
+  <calcite-icon icon="trash" scale="m" title="Trash"></calcite-icon>
+</div>`
+      },
+
+      card: {
+        name: "Cards",
+        tag: "calcite-card",
+        desc: "Versatile containers for grouping related information, actions, and media.",
+        html: `<!-- Calcite Card -->
+<calcite-card style="width: 100%; max-width: 380px;">
+  <h3 slot="title">Project Overview</h3>
+  <span slot="subtitle">Updated 2 hours ago</span>
+  <p>Calcite Design System provides a cohesive visual language and component library for modern mapping and GIS workflows.</p>
+  <calcite-button slot="footer" width="full">View Details</calcite-button>
+</calcite-card>`
+      },
+
+      notice: {
+        name: "Notices & Alerts",
+        tag: "calcite-notice",
+        desc: "Prominent messages and notifications for system status, alerts, or user actions.",
+        html: `<!-- Notices & Alerts -->
+<div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
+  <calcite-notice open kind="brand" icon="lightbulb">
+    <div slot="title">Component Tip</div>
+    <div slot="message">All Calcite components seamlessly adapt to light and dark themes.</div>
+  </calcite-notice>
+
+  <calcite-notice open kind="success" icon="check-circle">
+    <div slot="title">Success</div>
+    <div slot="message">Your configuration has been updated successfully.</div>
+  </calcite-notice>
+
+  <calcite-alert open kind="warning" icon="exclamation-mark-triangle">
+    <div slot="title">Scheduled Maintenance</div>
+    <div slot="message">Service restart scheduled at midnight.</div>
+  </calcite-alert>
+</div>`
+      },
+
+      input: {
+        name: "Inputs",
+        tag: "calcite-input",
+        desc: "Form input controls including text, search, and number fields.",
+        html: `<!-- Text, Search, and Number Inputs -->
+<div style="display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 420px;">
+  <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 13px;">
+    <span>Full Name</span>
+    <calcite-input placeholder="Enter full name..." clearable></calcite-input>
+  </label>
+
+  <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 13px;">
+    <span>Search Layer</span>
+    <calcite-input type="search" placeholder="Filter by keyword..." icon="search" clearable></calcite-input>
+  </label>
+
+  <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 13px;">
+    <span>Zoom Level</span>
+    <calcite-input type="number" min="1" max="20" value="12"></calcite-input>
+  </label>
+</div>`
+      },
+
+      switch_checkbox: {
+        name: "Switches & Checkboxes",
+        tag: "calcite-switch",
+        desc: "Toggle controls for binary options, settings, and form checklists.",
+        html: `<!-- Switch and Checkbox Controls -->
+<div style="display: flex; flex-direction: column; gap: 16px;">
+  <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px;">
+    <calcite-switch checked></calcite-switch>
+    <span>Enable Real-Time Layer Sync</span>
+  </label>
+
+  <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px;">
+    <calcite-checkbox checked></calcite-checkbox>
+    <span>Show Spatial Labels</span>
+  </label>
+
+  <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px;">
+    <calcite-checkbox></calcite-checkbox>
+    <span>Include Inactive Assets</span>
+  </label>
+</div>`
+      },
+
+      slider: {
+        name: "Sliders",
+        tag: "calcite-slider",
+        desc: "Interactive sliders for selecting numeric ranges or discrete steps.",
+        html: `<!-- Calcite Slider -->
+<div style="width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 10px;">
+  <span style="font-weight: 500; font-size: 13px;">Layer Opacity (%)</span>
+  <calcite-slider min="0" max="100" value="75" step="5" label-handles></calcite-slider>
+</div>`
+      },
+
+      badge_chip: {
+        name: "Badges & Chips",
+        tag: "calcite-badge / chip",
+        desc: "Labels, indicators, and interactive filtering tags.",
+        html: `<!-- Badges & Chips -->
+<div style="display: flex; flex-direction: column; gap: 18px;">
+  <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+    <calcite-badge>Default</calcite-badge>
+    <calcite-badge kind="brand">Brand</calcite-badge>
+    <calcite-badge kind="success">Active</calcite-badge>
+    <calcite-badge kind="warning">Pending</calcite-badge>
+    <calcite-badge kind="danger">Offline</calcite-badge>
+    <calcite-badge appearance="outline">Outline</calcite-badge>
+  </div>
+
+  <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+    <calcite-chip icon="check">Verified</calcite-chip>
+    <calcite-chip kind="brand">ArcGIS Maps</calcite-chip>
+    <calcite-chip closable>Active Filter</calcite-chip>
+  </div>
+</div>`
+      },
+
+      accordion: {
+        name: "Accordions",
+        tag: "calcite-accordion",
+        desc: "Vertically stacked list of headers that expand to reveal content.",
+        html: `<!-- Calcite Accordion -->
+<calcite-accordion selection-mode="multiple" style="width: 100%;">
+  <calcite-accordion-item heading="Geographic Coordinates" description="Latitude / Longitude properties" expanded>
+    <p style="margin: 0; padding: 4px 0; color: #555;">Coordinate System: WGS 1984 Web Mercator Auxiliary Sphere.</p>
+  </calcite-accordion-item>
+  <calcite-accordion-item heading="Attribute Filters" description="SQL where clause expressions">
+    <p style="margin: 0; padding: 4px 0; color: #555;">Apply attribute query filters to refine feature counts.</p>
+  </calcite-accordion-item>
+  <calcite-accordion-item heading="Rendering Rules" description="Vector tile symbology">
+    <p style="margin: 0; padding: 4px 0; color: #555;">Configure class breaks and unique values.</p>
+  </calcite-accordion-item>
+</calcite-accordion>`
+      }
+    };
+
+    let activeKey = "button";
+    const liveStage = document.getElementById("liveStage");
+    const codeView = document.getElementById("codeView");
+    const componentTag = document.getElementById("componentTag");
+    const copyBtn = document.getElementById("copyCodeBtn");
+    const selectorContainer = document.getElementById("componentSelector");
+    const catalogGrid = document.getElementById("catalogGrid");
+
+    function renderComponent(key) {
+      const comp = components[key];
+      if (!comp) return;
+
+      activeKey = key;
+
+      // Update live rendered stage
+      liveStage.innerHTML = comp.html;
+
+      // Update code preview
+      const codeElem = codeView.querySelector("code") || codeView;
+      codeElem.textContent = comp.html;
+
+      // Update header tag
+      componentTag.textContent = comp.tag;
+
+      // Update selector pills active state
+      selectorContainer.querySelectorAll(".pill-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.key === key);
+      });
+
+      // Update catalog cards active state
+      if (catalogGrid) {
+        catalogGrid.querySelectorAll(".catalog-card").forEach((card) => {
+          card.classList.toggle("active", card.dataset.key === key);
+        });
+      }
+    }
+
+    // Populate catalog cards
+    function buildCatalog() {
+      if (!catalogGrid) return;
+      catalogGrid.innerHTML = "";
+      Object.keys(components).forEach((key) => {
+        const item = components[key];
+        const card = document.createElement("div");
+        card.className = `catalog-card ${key === activeKey ? "active" : ""}`;
+        card.dataset.key = key;
+        card.innerHTML = `
+          <div class="catalog-card-title">${item.name}</div>
+          <div class="catalog-card-desc">${item.desc}</div>
+        `;
+        card.addEventListener("click", () => renderComponent(key));
+        catalogGrid.appendChild(card);
+      });
+    }
+
+    // Wire selector pills
+    selectorContainer.addEventListener("click", (e) => {
+      const btn = e.target.closest(".pill-btn");
+      if (btn && btn.dataset.key) {
+        renderComponent(btn.dataset.key);
+      }
+    });
+
+    // Wire copy button
+    copyBtn.addEventListener("click", () => {
+      const codeElem = codeView.querySelector("code") || codeView;
+      const text = codeElem.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        copyBtn.textContent = "✓ Copied!";
+        copyBtn.classList.add("copied");
+        setTimeout(() => {
+          copyBtn.textContent = "📋 Copy Code";
+          copyBtn.classList.remove("copied");
+        }, 2000);
+      });
+    });
+
+    // Initialize
+    buildCatalog();
+    renderComponent("button");
+  })();
+</script>

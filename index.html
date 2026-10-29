@@ -13,24 +13,27 @@
   </head>
   <body>
     <div class="container">
-      <header>
-        <h1>Calcite Design System</h1>
-      </header>
+      <header class="app-header">
+        <h1 class="app-title">Calcite Design System</h1>
 
-      <nav>
-        <ul>
-          <li><a href="#/">Home</a></li>
-          <li><a href="#/learner">Learner</a></li>
-          <li><a href="#/working">Working</a></li>
-          <li>
-            <a
-              href="https://developers.arcgis.com/calcite-design-system/"
-              target="_blank"
-              >Docs</a
-            >
-          </li>
-        </ul>
-      </nav>
+        <nav class="app-nav">
+          <ul>
+            <li><a href="#/" class="nav-link" data-route="/">Home</a></li>
+            <li><a href="#/working" class="nav-link" data-route="/working">Working</a></li>
+            <li>
+              <a
+                href="https://developers.arcgis.com/calcite-design-system/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="nav-link"
+              >
+                <span>Docs</span>
+                <calcite-icon icon="launch" scale="s" aria-hidden="true"></calcite-icon>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
 
       <main id="app"></main>
     </div>
