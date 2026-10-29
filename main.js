@@ -15,16 +15,24 @@ const routes = {
       return res.text();
     },
   },
-  "/ui-flow": {
-    title: "UI Flow Example",
+  "/sign-in-flow-example": {
+    title: "Sign-In Flow Example",
     load: async () => {
-      const res = await fetch("./views/ui-flow-example.html");
+      const res = await fetch("./views/sign-in-flow-example.html");
       return res.text();
     },
   },
+  "/sign-in-flow": {
+    title: "Sign-In Flow Example",
+    redirect: "#/sign-in-flow-example",
+  },
+  "/ui-flow": {
+    title: "Sign-In Flow Example",
+    redirect: "#/sign-in-flow-example",
+  },
   "/ui-flow-example": {
-    title: "UI Flow Example",
-    redirect: "#/ui-flow",
+    title: "Sign-In Flow Example",
+    redirect: "#/sign-in-flow-example",
   },
 };
 
@@ -52,7 +60,7 @@ function extractView(html) {
 }
 
 function updateActiveNav(hash) {
-  const links = document.querySelectorAll(".nav-link[data-route]");
+  const links = document.querySelectorAll(".nav-link[data-route], .dropdown-item[data-route]");
   links.forEach((link) => {
     const route = link.getAttribute("data-route");
     if (route === hash || (hash === "" && route === "/")) {
@@ -61,6 +69,40 @@ function updateActiveNav(hash) {
       link.classList.remove("active");
     }
   });
+
+  // Highlight parent dropdown if child item is active
+  const dropdownToggle = document.getElementById("examplesDropdownToggle");
+  if (dropdownToggle) {
+    const isExampleActive = hash === "/sign-in-flow-example" || hash.includes("flow");
+    dropdownToggle.classList.toggle("active", isExampleActive);
+  }
+}
+
+function setupDropdowns() {
+  const dropdownToggle = document.getElementById("examplesDropdownToggle");
+  const dropdownContainer = dropdownToggle?.closest(".nav-item-dropdown");
+
+  if (dropdownToggle && dropdownContainer) {
+    dropdownToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = dropdownContainer.classList.toggle("open");
+      dropdownToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!dropdownContainer.contains(e.target)) {
+        dropdownContainer.classList.remove("open");
+        dropdownToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    dropdownContainer.querySelectorAll(".dropdown-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        dropdownContainer.classList.remove("open");
+        dropdownToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
 }
 
 // innerHTML does not execute <script> tags, so re-create and append them
@@ -103,5 +145,6 @@ async function navigate() {
   updateActiveNav(hash);
 }
 
+setupDropdowns();
 window.addEventListener("hashchange", navigate);
 navigate();
