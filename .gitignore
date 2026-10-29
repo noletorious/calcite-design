@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Calcite local assets (loaded via CDN)
+assets/
+
+# OS files
+.DS_Store
+Thumbs.db

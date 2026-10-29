@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@esri/calcite-components": "^5.2.0"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "scripts": {
+    "dev": "http-server -p 8000 -c-1"
+  }
+}
