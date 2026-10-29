@@ -26,6 +26,17 @@ const routes = {
     title: "Sign-In Flow Example",
     redirect: "#/sign-in-flow-example",
   },
+  "/dark-mode-example": {
+    title: "Dark Mode Switch Example",
+    load: async () => {
+      const res = await fetch("./views/dark-mode-example.html");
+      return res.text();
+    },
+  },
+  "/dark-mode": {
+    title: "Dark Mode Switch Example",
+    redirect: "#/dark-mode-example",
+  },
   "/ui-flow": {
     title: "Sign-In Flow Example",
     redirect: "#/sign-in-flow-example",
@@ -70,11 +81,26 @@ function updateActiveNav(hash) {
     }
   });
 
-  // Highlight parent dropdown if child item is active
+  // Highlight parent dropdown as active text when on any example route
   const dropdownToggle = document.getElementById("examplesDropdownToggle");
   if (dropdownToggle) {
-    const isExampleActive = hash === "/sign-in-flow-example" || hash.includes("flow");
+    const isExampleActive =
+      hash === "/sign-in-flow-example" ||
+      hash === "/dark-mode-example" ||
+      hash.includes("flow") ||
+      hash.includes("dark-mode");
     dropdownToggle.classList.toggle("active", isExampleActive);
+  }
+}
+
+function closeDropdown() {
+  const dropdownToggle = document.getElementById("examplesDropdownToggle");
+  const dropdownContainer = dropdownToggle?.closest(".nav-item-dropdown");
+  if (dropdownContainer) {
+    dropdownContainer.classList.remove("open");
+  }
+  if (dropdownToggle) {
+    dropdownToggle.setAttribute("aria-expanded", "false");
   }
 }
 
@@ -91,16 +117,20 @@ function setupDropdowns() {
 
     document.addEventListener("click", (e) => {
       if (!dropdownContainer.contains(e.target)) {
-        dropdownContainer.classList.remove("open");
-        dropdownToggle.setAttribute("aria-expanded", "false");
+        closeDropdown();
       }
     });
 
     dropdownContainer.querySelectorAll(".dropdown-item").forEach((item) => {
       item.addEventListener("click", () => {
-        dropdownContainer.classList.remove("open");
-        dropdownToggle.setAttribute("aria-expanded", "false");
+        closeDropdown();
       });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeDropdown();
+      }
     });
   }
 }
@@ -118,6 +148,8 @@ function runScripts(root) {
 }
 
 async function navigate() {
+  closeDropdown();
+
   let hash = window.location.hash.slice(1) || "/";
 
   // Redirect legacy /learner route to /

@@ -63,104 +63,174 @@ body {
   line-height: 1;
 }
 
-/* Navigation */
-.app-nav ul {
+/* Navigation - clean text styling (no background buttons) */
+.app-nav > ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
 .nav-link {
-  color: #0079c1;
+  color: #444444;
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
-  padding: 8px 14px;
-  border-radius: 6px;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 4px;
+  transition: color 0.15s ease, border-color 0.15s ease;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1.4;
+  text-align: left;
 }
 
 .nav-link:hover {
-  background: #e8f5ff;
-  color: #005a96;
+  color: #0079c1;
+  background: transparent;
 }
 
+/* Active nav option: pure text with subtle bottom indicator line */
 .nav-link.active {
-  background: #0079c1;
-  color: #ffffff;
+  color: #0079c1;
+  font-weight: 600;
+  background: transparent;
+  border-bottom-color: #0079c1;
 }
 
-.nav-link.active calcite-icon {
-  color: #ffffff;
+.nav-link calcite-icon {
+  color: inherit;
+  transition: transform 0.2s ease;
 }
 
 /* Navigation Dropdown */
 .nav-item-dropdown {
   position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
 .dropdown-toggle {
   background: transparent;
   border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 4px;
   cursor: pointer;
   font-family: inherit;
+  color: #444444;
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
 }
 
-.dropdown-menu {
+.dropdown-toggle:hover {
+  color: #0079c1;
+  background: transparent;
+}
+
+.dropdown-toggle.active {
+  color: #0079c1;
+  font-weight: 600;
+  border-bottom-color: #0079c1;
+}
+
+.nav-item-dropdown.open .dropdown-toggle calcite-icon {
+  transform: rotate(180deg);
+}
+
+/* The dropdown menu ONLY opens when .open is present on .nav-item-dropdown */
+.dropdown-menu,
+.nav-item-dropdown:not(.open) .dropdown-menu {
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  min-width: 190px;
+  min-width: 220px;
   background: #ffffff;
-  border: 1px solid #e1e6eb;
+  border: 1px solid #dce2e8;
   border-radius: 6px;
   padding: 6px;
   margin: 0;
   list-style: none;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-  display: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  display: none !important;
   flex-direction: column;
   gap: 2px;
   z-index: 1000;
 }
 
-.nav-item-dropdown:hover .dropdown-menu,
 .nav-item-dropdown.open .dropdown-menu {
-  display: flex;
+  display: flex !important;
 }
 
+/* Dropdown items: clean left-aligned text links with equal padding */
 .dropdown-item {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  text-align: left;
   gap: 8px;
   padding: 8px 12px;
   border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
   color: #333333;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
-  transition: all 0.15s ease;
+  transition: color 0.15s ease;
+  cursor: pointer;
+}
+
+.dropdown-item-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
 }
 
 .dropdown-item:hover {
-  background: #e8f5ff;
   color: #0079c1;
+  text-decoration: underline;
+  background: transparent;
 }
 
+.dropdown-item calcite-icon {
+  color: inherit;
+  flex-shrink: 0;
+}
+
+/* Selected example in dropdown: distinguished by brand color, font-weight, and checkmark */
 .dropdown-item.active {
-  background: #0079c1;
-  color: #ffffff;
+  color: #0079c1;
+  font-weight: 600;
+  background: transparent;
 }
 
-.dropdown-item.active calcite-icon {
-  color: #ffffff;
+.selected-indicator {
+  display: none;
+  color: #0079c1;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.dropdown-item.active .selected-indicator {
+  display: inline-flex;
 }
 
 /* Main Content Area */
@@ -182,6 +252,12 @@ calcite-shell {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+#mapEl {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
 }
 
 /* Learner Layout */
