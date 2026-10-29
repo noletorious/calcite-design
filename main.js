@@ -15,12 +15,40 @@ const routes = {
       return res.text();
     },
   },
+  "/ui-flow": {
+    title: "UI Flow Example",
+    load: async () => {
+      const res = await fetch("./views/ui-flow-example.html");
+      return res.text();
+    },
+  },
+  "/ui-flow-example": {
+    title: "UI Flow Example",
+    redirect: "#/ui-flow",
+  },
 };
 
-function extractBody(html) {
+// Extracts styles, scripts, and body from raw ArcGIS copy-paste examples
+function extractView(html) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
-  return doc.body.innerHTML;
+
+  // Collect head styles and stylesheets that would otherwise be discarded
+  const headStyles = [];
+  doc.querySelectorAll("head style, head link[rel='stylesheet']").forEach((el) => {
+    headStyles.push(el.outerHTML);
+  });
+
+  // Collect any scripts declared in <head>
+  const headScripts = [];
+  doc.querySelectorAll("head script").forEach((el) => {
+    headScripts.push(el.outerHTML);
+  });
+
+  // Extract body content or fallback to full html
+  const bodyContent = doc.body ? doc.body.innerHTML : html;
+
+  return `${headStyles.join("\n")}\n${bodyContent}\n${headScripts.join("\n")}`;
 }
 
 function updateActiveNav(hash) {
@@ -63,9 +91,14 @@ async function navigate() {
     return;
   }
 
+  if (route.redirect) {
+    window.location.hash = route.redirect;
+    return;
+  }
+
   document.title = `${route.title} | Calcite Design System`;
   const content = await route.load();
-  appDiv.innerHTML = extractBody(content);
+  appDiv.innerHTML = extractView(content);
   runScripts(appDiv);
   updateActiveNav(hash);
 }

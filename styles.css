@@ -80,6 +80,22 @@ body {
 /* Main Content Area */
 main#app {
   min-height: 500px;
+  position: relative;
+}
+
+/* Accommodate ArcGIS Calcite Shell and full-viewport examples */
+main#app:has(calcite-shell),
+main#app:has(.content-panel) {
+  min-height: calc(100vh - 140px);
+}
+
+calcite-shell {
+  position: relative;
+  min-height: calc(100vh - 140px);
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 /* Learner Layout */
